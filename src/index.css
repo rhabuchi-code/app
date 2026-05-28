@@ -26,6 +26,44 @@ button {
 }
 
 /*
+ * iOS Safari の input[type="date"|"time"] は、内部の
+ * ::-webkit-date-and-time-value 等の擬似要素が独自の最小幅を持つため、
+ * 親要素に対して width: 100% / min-width: 0 を指定しても狭い画面で
+ * はみ出すことがある。以下の指定で擬似要素側の最小幅を 0 にし、
+ * かつネイティブのデフォルト見た目を抑制してレイアウトを安定化する。
+ */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+input[type='date']::-webkit-date-and-time-value,
+input[type='time']::-webkit-date-and-time-value,
+input[type='datetime-local']::-webkit-date-and-time-value {
+  min-width: 0;
+  width: 100%;
+  text-align: left;
+}
+
+input[type='date']::-webkit-datetime-edit,
+input[type='time']::-webkit-datetime-edit,
+input[type='datetime-local']::-webkit-datetime-edit {
+  min-width: 0;
+  width: 100%;
+  display: inline-flex;
+}
+
+input[type='date']::-webkit-datetime-edit-fields-wrapper,
+input[type='time']::-webkit-datetime-edit-fields-wrapper,
+input[type='datetime-local']::-webkit-datetime-edit-fields-wrapper {
+  min-width: 0;
+}
+
+/*
  * .tap / .tap-strong / .tap-row
  * iOS ライクなタップフィードバック。
  * - 押下: 100ms ease-out で素早く縮む
