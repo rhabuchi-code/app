@@ -149,7 +149,7 @@ export default function EventFormSheet({
           </button>
         </div>
 
-        <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+        <div className="flex-1 space-y-4 overflow-x-hidden overflow-y-auto px-4 py-4">
           <Field label="タイトル" error={errors.title}>
             <input
               type="text"
@@ -173,7 +173,7 @@ export default function EventFormSheet({
             />
           </Field>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <Field label="開始" error={errors.time}>
               <input
                 type="time"
@@ -279,11 +279,13 @@ export default function EventFormSheet({
   )
 }
 
+// iOS Safari の input[type=date|time] は intrinsic min-width を持ち、
+// grid/flex 子要素として 0 まで縮まないため、`min-w-0` を必ず付与する。
 const inputClass =
-  'w-full rounded-xl border border-[var(--theme-border)] bg-[var(--theme-calendar)] px-3 py-2.5 text-[17px] outline-none focus:border-[var(--theme-main)]'
+  'block w-full min-w-0 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-calendar)] px-3 py-2.5 text-[17px] outline-none focus:border-[var(--theme-main)]'
 
 const inputClassReadonly =
-  'w-full rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] px-3 py-2.5 text-[17px] text-[var(--theme-muted)] outline-none'
+  'block w-full min-w-0 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] px-3 py-2.5 text-[17px] text-[var(--theme-muted)] outline-none'
 
 function inputClassFor(readOnly?: boolean) {
   return readOnly ? inputClassReadonly : inputClass
@@ -299,7 +301,8 @@ function Field({
   children: ReactNode
 }) {
   return (
-    <label className="block">
+    // grid/flex 配下で intrinsic min-width に押し負けないよう min-w-0 を付ける
+    <label className="block min-w-0">
       <span className="mb-1 block text-[13px] font-medium text-[var(--theme-muted)]">
         {label}
       </span>
