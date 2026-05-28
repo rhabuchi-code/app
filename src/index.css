@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+body {
+  margin: 0;
+  background-color: #d1d1d6;
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue',
+    sans-serif;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+button {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/*
+ * .tap / .tap-strong / .tap-row
+ * iOS ライクなタップフィードバック。
+ * - 押下: 100ms ease-out で素早く縮む
+ * - 復帰: 220ms cubic-bezier でふわっと戻る（軽い overshoot）
+ * - tap        : 標準（ヘッダーやナビボタン）
+ * - tap-strong : 強め（円形ボタン・カラー選択）
+ * - tap-row    : リスト項目（scale 控えめ + 押下時の背景フラッシュ）
+ */
+.tap,
+.tap-strong,
+.tap-row {
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 220ms ease-out,
+    background-color 220ms ease-out,
+    color 220ms ease-out;
+  will-change: transform;
+}
+
+.tap:active {
+  transform: scale(0.96);
+  opacity: 0.7;
+  transition:
+    transform 100ms ease-out,
+    opacity 100ms ease-out,
+    background-color 100ms ease-out;
+}
+
+.tap-strong:active {
+  transform: scale(0.9);
+  opacity: 0.85;
+  transition:
+    transform 100ms ease-out,
+    opacity 100ms ease-out;
+}
+
+.tap-row:active {
+  transform: scale(0.985);
+  transition:
+    transform 100ms ease-out,
+    background-color 80ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tap,
+  .tap-strong,
+  .tap-row {
+    transition: none;
+  }
+  .tap:active,
+  .tap-strong:active,
+  .tap-row:active {
+    transform: none;
+  }
+}
